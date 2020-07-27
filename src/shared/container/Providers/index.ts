@@ -1,26 +1,4 @@
-import { container } from 'tsyringe';
-
-import IStorageProvider from './StorageProviders/models/IStorageProvider';
-import DiskStorageProvider from './StorageProviders/implementations/DiskStorageProvider';
-
-import IMailProvider from './MailProviders/models/IMailProvider';
-import EtherialMailProvider from './MailProviders/implementations/EtherialMailProvider';
-
-import IMailTemplateProvider from './MailTemplateProviders/models/IMailTemplateProvider';
-import HandlebarsTemplateMailProvider from './MailTemplateProviders/implementations/HandlebarsMailTemplateProvider';
-
-container.registerSingleton<IStorageProvider>(
-  'StorageProvider',
-  DiskStorageProvider,
-);
-
-container.registerSingleton<IMailTemplateProvider>(
-  'MailTemplateProvider',
-  HandlebarsTemplateMailProvider,
-);
-
-// usamos o register instance neste caso para que o constructor seja executado
-container.registerInstance<IMailProvider>(
-  'MailProvider',
-  container.resolve(EtherialMailProvider),
-);
+import './StorageProviders';
+import './MailTemplateProviders';
+import './MailProviders';
+import './CacheProviders';
