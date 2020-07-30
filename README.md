@@ -1,3 +1,9 @@
+Imagens Docker
+redis:alpine      6379->6379    redis
+mongo            27017->27017   mongodb
+postgres          5432->5432    postgres
+
+
 # Recuperação de Senha
 
 **RF**
