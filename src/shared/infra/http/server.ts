@@ -16,10 +16,10 @@ import '@shared/container';
 
 const app = express();
 
-app.use(rateLimiter);
 app.use(cors());
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadsFolder));
+app.use(rateLimiter); // coloca depois do /files para não afetar o acesso às imagens
 app.use(routes);
 
 app.use(errors());
