@@ -4,6 +4,10 @@ mongo            27017->27017   mongodb
 postgres          5432->5432    postgres
 
 
+Para inicial execute:
+$ yarn dev:server
+
+
 # Recuperação de Senha
 
 **RF**
