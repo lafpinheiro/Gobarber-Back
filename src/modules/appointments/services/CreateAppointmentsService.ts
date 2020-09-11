@@ -55,13 +55,16 @@ class CreateAppointmentsService {
       throw new AppError('This appointment is already booked');
     }
 
+    // TODO A dataa está sendo geavada numa hora e exibida em umaa hora + um (algum problema de fuso horário)
+    // console.log(appointmentDate);
     const appointment = await this.appointmentsRepository.create({
       provider_id,
       user_id,
       date: appointmentDate,
     });
-
+    // console.log(appointment);
     const dateFormatted = format(appointmentDate, "dd/MM/yyyy 'às' HH:mm'h'");
+    // console.log(dateFormatted);
 
     await this.notificationsRepository.create({
       recipient_id: provider_id,
