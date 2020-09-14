@@ -16,6 +16,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: ssh-scp-ssh-pipelines
+        uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.2
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}      
+          # execute pre-commands before scp
+          # first_ssh: # optional
+          # scp from local to remote
+          # scp: # optional
+          # execute post-commands after scp
+          last_ssh: whoami
+
       # No servidor: "yarn", "migrations" e restartar o Node (vamos usar https://github.com/appleboy/ssh-action)
       - name: Install dependencies, Run Migrations and Restart Node server
         uses: appleboy/ssh-action@master
