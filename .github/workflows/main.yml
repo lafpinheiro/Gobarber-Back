@@ -47,42 +47,24 @@ jobs:
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: ".,!node_modules"
           target: "~/app/gobarber-back"
         
-      # Executar "yarn" no servidor (vamos usar https://github.com/appleboy/ssh-action)
-      - name: Install dependencies on server
+      # No servidor: "yarn", "migrations" e restartar o Node (vamos usar https://github.com/appleboy/ssh-action)
+      - name: Install dependencies, Run Migrations and Restart Node server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/app/gobarber-back
             yarn
-            
-      # Executar as migrations do TypeORM (vamos usar https://github.com/appleboy/ssh-action)
-      - name: Install dependencies on server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            cd ~/app/gobarber-back
+            echo
             ./node_modules/.bin/typeorm migration:run
-        
-    # Restartar no servidor Node.js
-      - name: Restart Node Service
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_KEY }}
-          script: pm2 restart gobarber-api
+            echo
+            pm2 restart gobarber-api
