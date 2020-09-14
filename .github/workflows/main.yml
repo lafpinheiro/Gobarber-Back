@@ -25,7 +25,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            source .bashrc
+            echo $PATH
+            set
             cd ~/app/gobarber-back
             yarn
             ./node_modules/.bin/typeorm migration:run
