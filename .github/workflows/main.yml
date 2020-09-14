@@ -16,6 +16,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      # No servidor: "yarn", "migrations" e restartar o Node (vamos usar https://github.com/appleboy/ssh-action)
+      - name: Install dependencies, Run Migrations and Restart Node server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            whoami
+            cd ~/app/gobarber-back
+            yarn
+            ./node_modules/.bin/typeorm migration:run
+            pm2 restart gobarber-api
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v1.4.3
         with:
@@ -53,18 +68,3 @@ jobs:
           source: ".,!node_modules"
           target: "~/app/gobarber-back"
         
-      # No servidor: "yarn", "migrations" e restartar o Node (vamos usar https://github.com/appleboy/ssh-action)
-      - name: Install dependencies, Run Migrations and Restart Node server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            cd ~/app/gobarber-back
-            yarn
-            echo
-            ./node_modules/.bin/typeorm migration:run
-            echo
-            pm2 restart gobarber-api
