@@ -16,16 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Run SSH command
-        uses: garygrossgarten/github-action-ssh@v0.5.0
-        with:
-          # Command to execute on the remote server.
-          host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
-          username: ${{ secrets.SSH_USER }}
-          privatekey: ${{ secrets.SSH_KEY }}
-          command: cd ~/app/gobarber-back & yarn
-    
       # No servidor: "yarn", "migrations" e restartar o Node (vamos usar https://github.com/appleboy/ssh-action)
       - name: Install dependencies, Run Migrations and Restart Node server
         uses: appleboy/ssh-action@master
@@ -35,7 +25,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            whoami
+            source .bashrc
             cd ~/app/gobarber-back
             yarn
             ./node_modules/.bin/typeorm migration:run
