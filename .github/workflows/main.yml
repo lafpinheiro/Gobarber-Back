@@ -21,6 +21,19 @@ jobs:
         with:
           node-version: 12.18.2 
       
+      # Prepara o cache das dependências (https://github.com/actions/cache/blob/main/examples.md#node---yarn)
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       # Instalar as dependências NPN/Yarn
       - name: Install dependencies
         run: yarn
@@ -29,7 +42,7 @@ jobs:
       - name: Run Build
         run: yarn build
         
-      # Copiar pasta "dist" para o servidor (vamos usar https://github.com/appleboy/scp-action)
+      # Copiar o código inteiro para o servidor (vamos usar https://github.com/appleboy/scp-action)
       - name: copy dist to server
         uses: appleboy/scp-action@master
         with:
@@ -37,10 +50,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: "dist"
-          target: "test"
+          source: ".,!node_modules"
+          target: "~/app/gobarber-back"
         
-    # Substituir o código existente na pasta "dist" pelo novo código
     # Executar "yarn" no servidor
     # Executar as migrations do TypeORM
     # Restartar no servidor Node.js
