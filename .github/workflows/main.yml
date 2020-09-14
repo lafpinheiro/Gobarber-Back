@@ -25,12 +25,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            /home/deploy/.nvm/versions/node/v12.18.2/bin/node --version
-            sudo env PATH=$PATH:/home/deploy/.nvm/versions/node/v12.18.2/bin
-            env PATH=$PATH:/home/deploy/.nvm/versions/node/v12.18.2/bin
-            cat .bashrc
-            pwd
-            echo $PATH
+            source /etc/profile
             set
             cd ~/app/gobarber-back
             yarn
