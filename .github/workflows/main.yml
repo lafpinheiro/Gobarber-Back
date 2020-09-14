@@ -27,7 +27,7 @@ jobs:
       
       # Executar a build
       - name: Run Build
-        run: yarn buid
+        run: yarn build
         
       # Copiar pasta "dist" para o servidor (vamos usar https://github.com/appleboy/scp-action)
       - name: copy dist to server
