@@ -25,6 +25,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            echo ${{ secrets.SSH_HOST }}
+            echo ${{ secrets.SSH_USER }}
+            pwd
             echo $PATH
             set
             cd ~/app/gobarber-back
