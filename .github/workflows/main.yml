@@ -28,7 +28,12 @@ jobs:
           # scp from local to remote
           # scp: # optional
           # execute post-commands after scp
-          last_ssh: whoami
+          last_ssh: |
+            whoami
+            cd ~/app/gobarber-back
+            yarn
+            ./node_modules/.bin/typeorm migration:run
+            pm2 restart gobarber-api
 
       # No servidor: "yarn", "migrations" e restartar o Node (vamos usar https://github.com/appleboy/ssh-action)
       - name: Install dependencies, Run Migrations and Restart Node server
