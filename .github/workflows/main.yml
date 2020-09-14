@@ -25,7 +25,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            source /etc/bash.bashrc
+            source ~/.profile
             set
             cd ~/app/gobarber-back
             yarn
