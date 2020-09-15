@@ -33,8 +33,8 @@ jobs:
         run: yarn build
 
       - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@3.1.1
+        uses: sebastianpopp/ftp-action@v2.0.0
         with:
-          ftp-server: ${{ secrets.FTP_SERVER }}
-          ftp-username: ${{ secrets.FTP_USERNAME }}
-          ftp-password: ${ secrets.FTP_PASSWORD }}
+          host: ${{ secrets.FTP_SERVER }}
+          user: ${{ secrets.FTP_USERNAME }}
+          password: ${ secrets.FTP_PASSWORD }}
